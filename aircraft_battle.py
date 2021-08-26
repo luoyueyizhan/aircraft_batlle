@@ -15,8 +15,8 @@ def run_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-        planet.blitme()
         screen.fill(air_settings.bg_color)
+        planet.blitme()
         pygame.display.flip()
 
 run_game()
