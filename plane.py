@@ -1,13 +1,14 @@
 # %%
 import pygame
+from pygame.sprite import Sprite
 
-
-class Plane:
+class Plane(Sprite):
     def __init__(self,screen,setting):
+        super(Plane,self).__init__()
         self.screen=screen
         self.setting=setting
 
-        self.image=pygame.image.load("./images/aircraft.png")
+        self.image=pygame.image.load("./images/aircraft1.png")
         self.rect=self.image.get_rect()
         self.screen_rect=self.screen.get_rect()
 
@@ -28,6 +29,8 @@ class Plane:
         
         self.rect.centerx=self.center
         
+    def center_plane(self):
+        self.center = self.screen_rect.centerx
 
 
     def blitme(self):
