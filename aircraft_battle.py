@@ -11,6 +11,20 @@ from button import Button
 from scoreboard import Scoreboard
 
 def run_game():
+    """
+Run the game
+Args:
+  air_setting(Settings):The basic values of the game.
+  screen(Any):The values of screen.
+  play_button(Button):······
+  bullets(Group):the bullets of the plane.
+  eplanes(Group):·····
+  plane(Plane):some values and fuctions of plane.
+  eplane(Eplane):·····
+  stats=(GameStats):······
+  score_board(Scoreboard):······
+  """
+
     pygame.init()
     air_settings=Settings()
     screen=pygame.display.set_mode((air_settings.screen_width,air_settings.screen_height))

@@ -6,6 +6,15 @@ from 敌机 import Eplane
 from time import sleep
 
 def check_keydown_events(event,plane,setting,screen,bullets):
+    """
+    control the plane through checking down Keyboard.
+    Args:
+      event(Any):What keyboard do.
+      plane(Plane):the values and function of plane.
+      setting(Settings):the basic value of the game.
+      screen(Any):values of the screen.
+      bullets(Any):the gruop of bullet.
+    """
     if event.key == pygame.K_RIGHT:
         plane.mv_right=True
     elif event.key==pygame.K_LEFT:
@@ -16,6 +25,12 @@ def check_keydown_events(event,plane,setting,screen,bullets):
             bullets.add(new_bullet)
 
 def check_keyup_events(event,plane):
+    """
+    control the plane through checking up keyboard.
+    Args:
+      event(Any):what keyboard do.
+      plane(Plane):the values and function of plane.
+    """
     if event.key==pygame.K_RIGHT:
         plane.mv_right=False
     elif event.key==pygame.K_LEFT:
@@ -23,6 +38,15 @@ def check_keyup_events(event,plane):
 
 
 def check_events(plane, setting, screen, bullets, stats, play_button, eplanes,score_board):
+    """
+    control the plane through checking the keyboard, this one is not accomplished.
+    Args:
+      event(Any):What keyboard do.
+      plane(Plane):the values and function of plane.
+      setting(Settings):the basic value of the game.
+      screen(Any):values of the screen.
+      bullets(Any):the gruop of bullet.
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
                 sys.exit()
@@ -51,6 +75,14 @@ def check_play_button(plane, setting, screen, bullets, stats, play_button, mouse
 
 
 def update_screen(screen,bg_color,plane,bullets,eplanes,stats,play_button,score_board):
+    """
+    update the screen,not accomplished.
+    Args:
+      screen(Any):values of the screen. 
+      bg_color(Any):the color of screen.
+      plane(Plane):the values and function of plane.
+      bullets(Any):the gruop of bullet.
+    """
     screen.fill(bg_color)
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -62,6 +94,16 @@ def update_screen(screen,bg_color,plane,bullets,eplanes,stats,play_button,score_
     pygame.display.flip()
 
 def update_bullets(bullets,eplanes,setting, screen, plane, stats,score_board):
+    """
+    update bullets,not accomplished.
+    Args:
+      bullets(Any):the gruop of bullet.
+      setting(Settings):the basic value of the game.
+      screen(Any):values of the screen. 
+      plane(Plane):the values and function of plane.
+      bullet(Any): one bullet of the group.
+      
+    """
     bullets.update()
     for bullet in bullets.copy():
             if bullet.rect.bottom <=0:

@@ -1,5 +1,19 @@
 #%%
 class Settings:
+    """
+    some basic value of the game.
+    Args:
+      screen_width(int):the width of the screen.
+      screen_height(int):the height of the screen.
+      bg_color(tuple):the color of the screen.
+      plane_speed(float):the speed of the plane.
+      bullet_speed(float):the speed of the bullet.
+      bullet_width(int):the width of the bullet.
+      bullet_height(int):the height of the bullet.
+      bullet_color(tuple): the color of the bullet.
+      bullet_allowed(int): the maximum quaitity of the bullets.
+
+    """
     def __init__(self):
         self.screen_width=1200
         self.screen_height=800
