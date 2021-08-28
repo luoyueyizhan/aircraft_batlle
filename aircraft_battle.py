@@ -12,18 +12,20 @@ from scoreboard import Scoreboard
 
 def run_game():
     """
-Run the game
-Args:
-  air_setting(Settings):The basic values of the game.
-  screen(Any):The values of screen.
-  play_button(Button):······
-  bullets(Group):the bullets of the plane.
-  eplanes(Group):·····
-  plane(Plane):some values and fuctions of plane.
-  eplane(Eplane):·····
-  stats=(GameStats):······
-  score_board(Scoreboard):······
-  """
+
+    Run the game
+
+    Args:
+        air_setting(Settings):The basic values of the game.
+        screen(Any):The values of screen.
+        play_button(Button):the play button
+        bullets(Group):the bullets of the plane.
+        eplanes(Group):the group of eplane
+        plane(Plane):some values and fuctions of plane.
+        eplane(Eplane):Enemy plane
+        stats=(GameStats):data of the game
+        score_board(Scoreboard):The scoring
+    """
 
     pygame.init()
     air_settings=Settings()

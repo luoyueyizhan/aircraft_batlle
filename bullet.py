@@ -5,11 +5,13 @@ from pygame.sprite import Sprite
 
 class Bullet(Sprite):
     """
-    The difinition of buttets of the game.
+
+    The definition of bullets of the game.
+
     Args:
-      setting(Settings):the basic values of the game.
-      screen(Any):the values and function of the game screen.
-      plane(Plane):values and fuctions of Plane.
+        setting(Settings):the basic values of the game.
+        screen(Any):the values and function of the game screen.
+        plane(Plane):values and fuctions of Plane.
     
     """
     def __init__(self, setting,screen,plane):
@@ -23,16 +25,20 @@ class Bullet(Sprite):
         self.speed=setting.bullet_speed
     def update(self) :
         """
-    update values of the position of the bullet
-    Args:
-      y(Bullet):value of the next vertical direction of the bullet.
-      rect(Rect|None):value of the vertical direction of the bullet.
+
+        update values of the position of the bullet
+
+        Args:
+            y(Bullet):value of the next vertical direction of the bullet.
+            rect(Rect|None):value of the vertical direction of the bullet.
 
         """
         self.y-=self.speed
         self.rect.y=self.y
     def draw_bullet(self):
         """
+
         draw bullet on the screen.
+        
         """
         pygame.draw.rect(self.screen,self.color,self.rect)
