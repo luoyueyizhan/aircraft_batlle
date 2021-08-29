@@ -26,7 +26,7 @@ class Settings:
         self.screen_width=1200
         self.screen_height=800
         self.bg_color=(230,230,230)
-        self.plane_speed=2.5
+        self.plane_speed=5
         self.bullet_speed=3
         self.bullet_width=3
         self.bullet_height=15
@@ -50,7 +50,7 @@ class Settings:
         self.bullet_speed = 3
         self.eplane_speed = 2
         self.fleet_direction = 1
-        self.eplane_points = 10
+        self.eplane_points = 50
         
     def increase_speed(self):
         """

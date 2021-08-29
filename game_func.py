@@ -4,6 +4,15 @@ import sys
 from bullet import Bullet
 from 敌机 import Eplane
 from time import sleep
+import random
+
+pygame.mixer.init()
+bullet_sound = pygame.mixer.Sound('resources/sound/bullet.wav')
+enemy1_down_sound = pygame.mixer.Sound('resources/sound/enemy1_down.wav')
+game_over_sound = pygame.mixer.Sound('resources/sound/game_over.wav')
+bullet_sound.set_volume(0.3)
+enemy1_down_sound.set_volume(0.3)
+game_over_sound.set_volume(0.3)
 
 def check_keydown_events(event,plane,setting,screen,bullets):
     """
@@ -61,6 +70,7 @@ def check_events(plane, setting, screen, bullets, stats, play_button, eplanes,sc
         if event.type == pygame.QUIT:
                 sys.exit()
         elif event.type == pygame.KEYDOWN:
+            bullet_sound.play()
             check_keydown_events(event,plane,setting,screen,bullets)       
         elif event.type ==pygame.KEYUP:
             check_keyup_events(event,plane)
@@ -88,6 +98,7 @@ def check_play_button(plane, setting, screen, bullets, stats, play_button, mouse
     """
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
+        bullet_sound.play()
         setting.initialize_dynamic_settings()
         pygame.mouse.set_visible(False)
         stats.game_active = True
@@ -147,17 +158,17 @@ def update_bullets(bullets,eplanes,setting, screen, plane, stats,score_board):
                 bullets.remove(bullet)
     collisions=pygame.sprite.groupcollide(bullets,eplanes,True,True)
     if collisions:
+        enemy1_down_sound.play()
         for eplane in collisions.values():
             stats.score += setting.eplane_points * len(eplane)
             score_board.prep_score()
         check_high_score(stats, score_board)
-
-    if len(eplanes)==0:
-        bullets.empty()
-        setting.increase_speed()
-        stats.level+=1
-        score_board.prep_level()
-        creat_fleet(setting,screen, eplanes, plane)
+        if stats.score%1000==0:
+            bullets.empty()
+            setting.increase_speed()
+            stats.level+=1
+            score_board.prep_level()
+            creat_eplane(setting,screen, eplanes)
 
 def check_high_score(stats, score_board):
     """
@@ -172,41 +183,7 @@ def check_high_score(stats, score_board):
         stats.high_score = stats.score
         score_board.prep_high_score()
 
-def get_number_eplane_x(setting,eplane_width):
-    """
-
-    The number of enemy planes that can be accommodated in a row
-
-    Args:
-        setting(Settings):the basic value of the game.
-        eplane_width(int):the width of the eplane
-
-    Returns:
-        int:The number of enemy planes that can be accommodated in a row
-    """
-    available_space_x=setting.screen_width-(2*eplane_width)
-    number_eplane_x=int(available_space_x/(2*eplane_width))
-    return number_eplane_x
-
-def get_number_rows(setting,plane_height,eplane_height):
-    """
-
-    The number of rows that can be accommodated in a screen
-
-    Args:
-        setting(Settings):the basic value of the game.
-        plane_height(int):the height of plane
-        eplane_height(int):the height of eplane
-
-    Returns:
-        int:The number of rows that can be accommodated in a screen
-    """
-    available_space_y=setting.screen_height-7*eplane_height-plane_height
-    print(available_space_y,eplane_height)
-    number_rows=int(available_space_y/eplane_height)
-    return number_rows
-
-def creat_eplane(setting,screen,eplanes,eplane_number,number_rows):
+def creat_eplane(setting,screen,eplanes):
     """
 
     creat eplane
@@ -219,61 +196,9 @@ def creat_eplane(setting,screen,eplanes,eplane_number,number_rows):
         number_rows(int):The number of rows that can be accommodated in a screen
       
     """
-    eplane=Eplane(setting,screen)
-    eplane_width=eplane.rect.width
-    eplane.x=eplane_width+2*eplane_width*eplane_number
-    eplane.rect.x=eplane.x
-    eplane.rect.y=eplane.rect.height+2*eplane.rect.height*number_rows
+    eplane =Eplane(setting,screen)   
     eplanes.add(eplane)
-
-def creat_fleet(setting,screen,eplanes,plane):
-    """
-
-    creat a group of eplane
-
-    Args:        
-        setting(Settings):the basic value of the game.
-        screen(Any):values of the screen. 
-        eplanes(Group):A group of enemy planes
-        plane(Plane):the values and function of plane.
-      
-    """
-    eplane=Eplane(setting,screen)
-    number_eplane_x=get_number_eplane_x(setting,eplane.rect.width)
-    number_rows=get_number_rows(setting,plane.rect.height,eplane.rect.height)
-    for row_number in range(5):#number_rows
-        for eplane_number in range(5):#number_eplane_x
-            creat_eplane(setting,screen,eplanes,eplane_number,row_number)
-        
-def change_fleet_direction(setting,eplanes):
-    """
-
-    change the direction of the fleet
-
-    Args:        
-        setting(Settings):the basic value of the game.       
-        eplanes(Group):A group of enemy planes       
-      
-    """
-    for eplane in eplanes.sprites():
-        eplane.rect.y+=setting.fleet_drop_speed
-    setting.fleet_direction*=-1
-
-def check_fleet_edges(setting,eplanes):
-    """
-
-    check if the fleet Touch the edge of the screen
-
-    Args:        
-        setting(Settings):the basic value of the game.       
-        eplanes(Group):A group of enemy planes       
-      
-    """
-    for eplane in eplanes.sprites():
-        if eplane.check_edges():
-            change_fleet_direction(setting,eplanes)
-            break
-
+    
 def update_eplanes(setting,eplanes,plane, stats, screen, bullets,scord_board):
     """
 
@@ -290,7 +215,6 @@ def update_eplanes(setting,eplanes,plane, stats, screen, bullets,scord_board):
       
     """
     eplanes.update()
-    check_fleet_edges(setting,eplanes)
     game_over = pygame.sprite.spritecollideany(plane, eplanes)
     if game_over:
         plane_hit(setting,stats,screen,plane,eplanes,bullets,scord_board)
@@ -316,9 +240,8 @@ def plane_hit(setting,stats,screen,plane,eplanes,bullets,scord_board):
         scord_board.prep_planes()
         eplanes.empty()
         bullets.empty()
-        creat_fleet(setting,screen,eplanes,plane)
         plane.center_plane()
-        sleep(1)
+        creat_eplane(setting,screen,eplanes)
     else:
         stats.game_active=False
         pygame.mouse.set_visible(True)
@@ -341,7 +264,7 @@ def check_eplanes_bottom(setting, eplanes, plane, stats, screen, bullets,scord_b
     screen_rect = screen.get_rect()
     for eplane in eplanes.sprites():
         if eplane.rect.bottom >= screen_rect.bottom:
-            plane_hit(setting,stats,screen,plane,eplanes,bullets,scord_board)
+            eplanes.remove(eplane)
             break
 
 

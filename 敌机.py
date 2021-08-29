@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+import random
 
 class Eplane(Sprite):
     """
@@ -20,11 +21,11 @@ class Eplane(Sprite):
         self.setting=setting
         self.image=pygame.image.load('images\敌机一1.png')
         self.rect=self.image.get_rect()
-        self.rect.x=self.rect.width
+        self.rect.x=random.randint(0, setting.screen_width- self.rect.w)
         self.rect.y=self.rect.height
         self.rect.w=self.rect.width
         self.rect.h=int(self.rect.height/2)
-        self.x=float(self.rect.x)
+        self.y=float(self.rect.y)
     
     def blitme(self):
         """
@@ -52,6 +53,6 @@ class Eplane(Sprite):
         update the position of the eplane.
         
         """
-        self.x+=(self.setting.eplane_speed*self.setting.fleet_direction)
-        self.rect.x=self.x
+        self.y+=self.setting.eplane_speed
+        self.rect.y=self.y
 
